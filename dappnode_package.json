@@ -1,0 +1,130 @@
+{
+  "name": "hopr-testnet.public.dappnode.eth",
+  "version": "1.0.0",
+  "upstreamVersion": "saint-louis",
+  "description": "The HOPR protocol ensures everyone has control of their privacy, data, and identity. By running a HOPR Node, you can obtain HOPR tokens by relaying data and connect to the HOPR Network.",
+  "type": "service",
+  "architectures": [
+    "linux/amd64"
+  ],
+  "mainService": "node",
+  "author": "HOPR Association <tech@hoprnet.org> (https://hoprnet.org)",
+  "contributors": [
+    "Tropicar <tropicar@protonmail.com> (https://github.com/tropicar)"
+  ],
+  "upstreamRepo": "hoprnet/hoprnet",
+  "upstreamArg": "UPSTREAM_VERSION",
+  "categories": [
+    "Communications",
+    "Economic incentive"
+  ],
+  "links": {
+    "homepage": "https://hoprnet.org/",
+    "ui": "http://admin.hopr-testnet.public.dappnode/?apiEndpoint=http://hopr-testnet.public.dappnode:3101",
+    "api": "http://hopr-testnet.public.dappnode:3101/swagger-ui/index.html",
+    "docs": "https://docs.hoprnet.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dappnode/DAppNodePackage-Hopr-Testnet"
+  },
+  "bugs": {
+    "url": "https://github.com/dappnode/DAppNodePackage-Hopr-Testnet/issues"
+  },
+  "requirements": {
+    "minimumDappnodeVersion": "0.2.56"
+  },
+  "exposable": [
+    {
+      "name": "HOPR Admin UI",
+      "description": "Port for HOPR Admin UI console",
+      "port": 3100,
+      "serviceName": "admin"
+    },
+    {
+      "name": "HOPR REST API",
+      "description": "Port for HOPR node REST API",
+      "port": 3101,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p",
+      "description": "HOPR P2P port",
+      "port": 9191,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 1)",
+      "description": "HOPR P2P port (alternative 1)",
+      "port": 9192,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 2)",
+      "description": "HOPR P2P port (alternative 2)",
+      "port": 9193,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 3)",
+      "description": "HOPR P2P port (alternative 3)",
+      "port": 9194,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 4)",
+      "description": "HOPR P2P port (alternative 4)",
+      "port": 9195,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 5)",
+      "description": "HOPR P2P port (alternative 5)",
+      "port": 9196,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 6)",
+      "description": "HOPR P2P port (alternative 6)",
+      "port": 9197,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 7)",
+      "description": "HOPR P2P port (alternative 7)",
+      "port": 9198,
+      "serviceName": "node"
+    },
+    {
+      "name": "HOPR p2p (alt 8)",
+      "description": "HOPR P2P port (alternative 8)",
+      "port": 9199,
+      "serviceName": "node"
+    }
+  ],
+  "license": "GLP-3.0",
+  "backup": [
+    {
+      "name": "db",
+      "path": "/app/hoprd-db/db"
+    },
+    {
+      "name": "identity",
+      "path": "/app/hoprd-db/.hopr-identity"
+    },
+    {
+      "name": "config",
+      "path": "/app/hoprd.cfg.yaml"
+    }
+  ],
+  "globalEnvs": [
+    {
+      "envs": [
+        "DOMAIN"
+      ],
+      "services": [
+        "node"
+      ]
+    }
+  ]
+}
