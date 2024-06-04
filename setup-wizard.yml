@@ -109,13 +109,13 @@ fields:
       on your router and exposed to the Internet.
       You can also use the (dyn)DNS name of your node as `host`.
       The `host` part must be an external public IP address or DNS name of this node.
-      The recommended default TCP `port` is 9091, but any port in the range 9091-9099 is usable.
+      The recommended default TCP `port` is 9191, but any port in the range 9191-9199 is usable.
 
       *Make sure the given port is port-forwarded on your router and exposed to the Internet.*
 
-      *Example (public IP address):* `1.2.3.4:9091`
+      *Example (public IP address):* `1.2.3.4:9191`
 
-      *Example (dynDNS entry):* `abcd1234.dyndns.dappnode.io:9091`
+      *Example (dynDNS entry):* `abcd1234.dyndns.dappnode.io:9191`
     secret: false
-    pattern: "^[a-z0-9.-]{3,}:909[1-9]$"
+    pattern: "^[a-z0-9.-]{3,}:919[1-9]$"
     patternErrorMessage: Must be in correct host:port format!
