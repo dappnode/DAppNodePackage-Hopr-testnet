@@ -16,4 +16,7 @@ jobs:
           npm install
           npx @dappnode/dappnodesdk build \
             --provider "remote" \
-            --verbose
+            --verbose | tee build.log
+
+          echo "DNP (DAppNode Package) built and uploaded" >> $GITHUB_STEP_SUMMARY
+          grep "ipfs" build.log >> $GITHUB_STEP_SUMMARY
