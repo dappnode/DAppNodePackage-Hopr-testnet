@@ -1,0 +1,9 @@
+# DAppNodeSDK release directories
+/build_*/
+/build/
+
+# Nix OS
+/.direnv
+
+# Node.js
+/node_modules/
