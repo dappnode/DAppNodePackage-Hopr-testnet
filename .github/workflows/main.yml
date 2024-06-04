@@ -11,10 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: |
+      - name: Build and upload to IPFS
+        run: |
           npm install
-          npx @dappnode/dappnodesdk build
-          npx @dappnode/dappnodesdk publish patch \
+          npx @dappnode/dappnodesdk build \
             --provider "remote" \
-            --upload_to "ipfs" \
             --verbose
