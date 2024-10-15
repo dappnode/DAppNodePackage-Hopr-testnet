@@ -1,13 +1,14 @@
 version: "3.5"
 services:
   node:
+    # Do not set image field here, it will be set automatically by the sdk.
     build:
       context: .
       args:
         UPSTREAM_VERSION: >-
           2.1.0@sha256:28f5db3a37275edecb3b4d52f2d254832bf3346d9464a538c419575a40d8b744
     ports:
-      - "3101"
+      - "3101:3101/tcp"
       - 9191:9191/tcp
       - 9191:9191/udp
       - 9192:9192/tcp
@@ -27,13 +28,13 @@ services:
       - 9199:9199/tcp
       - 9199:9199/udp
     volumes:
-      - db:/app/hoprd-db
+      - "db:/app/hoprd-db"
     security_opt:
-      - seccomp:unconfined
+      - "seccomp:unconfined"
     environment:
       RUST_LOG: info
       HOPRD_CONFIGURATION_FILE_PATH: /app/hoprd.cfg.yaml
-      HOPRD_HOST: 127.0.0.1:9191
+      HOPRD_HOST: "127.0.0.1:9191"
       HOPRD_SAFE_ADDRESS: 0x
       HOPRD_MODULE_ADDRESS: 0x
       HOPRD_HEARTBEAT_THRESHOLD: 60
@@ -46,11 +47,15 @@ services:
       resources:
         limits:
           memory: 2G
-    image: node.hopr-testnet.public.dappnode.eth:1.0.0
   admin:
-    image: europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:1.2.2
+    # The actual image name  will be set automatically by the sdk.
+    # This tag only serves to pull the correct image during build.
+    build:
+      context: ./hopr-admin
+    image: >-
+      europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:2.1.7
     ports:
-      - "3100:80"
+      - "3100:4677"
     restart: unless-stopped
     deploy:
       resources:
