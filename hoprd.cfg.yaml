@@ -32,8 +32,6 @@ hopr:
   protocol:
     heartbeat:
       timeout: 15
-    msg:
-      timeout: 15
     ticket_aggregation:
       timeout: 15
   chain:
