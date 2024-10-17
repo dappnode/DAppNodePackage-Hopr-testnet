@@ -21,7 +21,7 @@
   "links": {
     "homepage": "https://hoprnet.org/",
     "ui": "http://admin.hopr-testnet.public.dappnode/?apiEndpoint=http://hopr-testnet.public.dappnode:3101",
-    "api": "http://hopr-testnet.public.dappnode:3101/swagger-ui/index.html",
+    "api": "http://hopr-testnet.public.dappnode:3101/scalar",
     "docs": "https://docs.hoprnet.org"
   },
   "repository": {
