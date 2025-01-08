@@ -26,6 +26,8 @@ services:
       - 9198:9198/udp
       - 9199:9199/tcp
       - 9199:9199/udp
+      - "10000-10100:10000-10100/tcp"
+      - "10000-10100:10000-10100/udp"
     volumes:
       - "db:/app/hoprd-db"
     security_opt:
@@ -42,6 +44,7 @@ services:
       HOPR_INTERNAL_LIBP2P_YAMUX_MAX_NUM_STREAMS: 1024
       HOPRD_PASSWORD: ""
       HOPRD_PROVIDER: ""
+      HOPRD_SESSION_PORT_RANGE: "10000:10100"
     restart: unless-stopped
     deploy:
       resources:
