@@ -1,7 +1,7 @@
 ---
 hopr:
   db:
-    data: /app/hoprd/data
+    data: /app/hoprd-db/db
     initialize: true
     force_initialize: false
   strategy:
@@ -39,12 +39,12 @@ hopr:
     check_unrealized_balance: true
     network: rotsee
   safe_module:
-    safe_transaction_service_provider: https://safe-transaction.prod.hoprnet.link/
+    safe_transaction_service_provider: https://safe-transaction.prod.hoprtech.net/
   transport:
     announce_local_addresses: false
     prefer_local_addresses: false
 identity:
-  file: /app/hoprd/conf/hopr.id
+  file: /app/hoprd-db/.hopr-identity
 api:
   enable: true
   host:

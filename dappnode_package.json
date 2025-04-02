@@ -105,12 +105,16 @@
   "license": "GLP-3.0",
   "backup": [
     {
-      "name": "data",
-      "path": "/app/hoprd/data"
+      "name": "db",
+      "path": "/app/hoprd-db/db"
+    },
+    {
+      "name": "identity",
+      "path": "/app/hoprd-db/.hopr-identity"
     },
     {
       "name": "config",
-      "path": "/app/hoprd/conf"
+      "path": "/app/hoprd.cfg.yaml"
     }
   ],
   "globalEnvs": [
