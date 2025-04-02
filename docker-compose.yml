@@ -29,12 +29,13 @@ services:
       - "10000-10100:10000-10100/tcp"
       - "10000-10100:10000-10100/udp"
     volumes:
-      - "db:/app/hoprd-db"
+      - "data:/app/hoprd/data"
+      - "conf:/app/hoprd/conf"
     security_opt:
       - "seccomp:unconfined"
     environment:
       RUST_LOG: info
-      HOPRD_CONFIGURATION_FILE_PATH: /app/hoprd.cfg.yaml
+      HOPRD_CONFIGURATION_FILE_PATH: /app/hoprd/conf/hoprd.cfg.yaml
       HOPRD_HOST: "127.0.0.1:9191"
       HOPRD_SAFE_ADDRESS: 0x
       HOPRD_MODULE_ADDRESS: 0x
@@ -56,7 +57,7 @@ services:
     build:
       context: ./hopr-admin
     image: >-
-      europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:2.1.6.1
+      europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:2.1.14
     ports:
       - "3100:4677"
     restart: unless-stopped
