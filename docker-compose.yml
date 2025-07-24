@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.6"
 services:
   node:
     # Do not set image field here, it will be set automatically by the sdk.
@@ -39,13 +39,14 @@ services:
       HOPRD_HOST: "127.0.0.1:9191"
       HOPRD_SAFE_ADDRESS: 0x
       HOPRD_MODULE_ADDRESS: 0x
-      HOPRD_HEARTBEAT_THRESHOLD: 60
-      HOPRD_HEARTBEAT_INTERVAL: 20
-      HOPRD_HEARTBEAT_VARIANCE: 1
-      HOPR_INTERNAL_LIBP2P_YAMUX_MAX_NUM_STREAMS: 1024
       HOPRD_PASSWORD: ""
       HOPRD_PROVIDER: ""
       HOPRD_SESSION_PORT_RANGE: "10000:10100"
+      HOPRD_MAX_BLOCK_RANGE: 100
+      HOPRD_MAX_RPC_REQUESTS_PER_SEC: 10
+      HOPRD_NAT: "true"
+      ADDITIONAL_CMDLINE_ARGS: ""
+      ADDITIONAL_ENVIRONMENT_VARS: ""
     restart: unless-stopped
     deploy:
       resources:
@@ -57,7 +58,7 @@ services:
     build:
       context: ./hopr-admin
     image: >-
-      europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:2.1.14
+      europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:kaunas
     ports:
       - "3100:4677"
     restart: unless-stopped

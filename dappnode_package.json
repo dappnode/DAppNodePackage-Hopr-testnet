@@ -1,7 +1,7 @@
 {
   "name": "hopr-testnet.public.dappnode.eth",
   "version": "1.0.0",
-  "upstreamVersion": "saint-louis",
+  "upstreamVersion": "kaunas",
   "description": "The HOPR protocol ensures everyone has control of their privacy, data, and identity. By running a HOPR Node, you can obtain HOPR tokens by relaying data and connect to the HOPR Network.",
   "type": "service",
   "architectures": [
@@ -21,7 +21,7 @@
   "links": {
     "homepage": "https://hoprnet.org/",
     "ui": "http://admin.hopr-testnet.public.dappnode/?apiEndpoint=http://hopr-testnet.public.dappnode:3101",
-    "api": "http://hopr-testnet.public.dappnode:3101/scalar",
+    "api": "http://hopr-testnet.public.dappnode:3101/swagger-ui/index.html",
     "docs": "https://docs.hoprnet.org"
   },
   "repository": {
@@ -51,6 +51,12 @@
       "name": "HOPR p2p",
       "description": "HOPR P2P port",
       "port": 9191,
+      "serviceName": "node"
+    },
+    {
+      "name": "GnosisVPN Session port",
+      "description": "Port used for Gnosis VPN",
+      "port": 1422,
       "serviceName": "node"
     },
     {
