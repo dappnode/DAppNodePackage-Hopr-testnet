@@ -26,8 +26,8 @@ services:
       - 9198:9198/udp
       - 9199:9199/tcp
       - 9199:9199/udp
-      - "10000-10100:10000-10100/tcp"
-      - "10000-10100:10000-10100/udp"
+      - "20000-20100:20000-20100/tcp"
+      - "20000-20100:20000-20100/udp"
     volumes:
       - "data:/app/hoprd/data"
       - "conf:/app/hoprd/conf"
@@ -41,7 +41,7 @@ services:
       HOPRD_MODULE_ADDRESS: 0x
       HOPRD_PASSWORD: ""
       HOPRD_PROVIDER: ""
-      HOPRD_SESSION_PORT_RANGE: "10000:10100"
+      HOPRD_SESSION_PORT_RANGE: "20000:20100"
       HOPRD_MAX_BLOCK_RANGE: 100
       HOPRD_MAX_RPC_REQUESTS_PER_SEC: 10
       HOPRD_NAT: "true"
