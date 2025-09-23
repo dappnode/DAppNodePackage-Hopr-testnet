@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        UPSTREAM_VERSION: latest
+        UPSTREAM_VERSION: 3.0.0@sha256:fa9764f5e9927094960f63dfb68dbf6cbc237210559a890f1effa29da6e92ecd
     ports:
       - "3101:3101/tcp"
       - 9191:9191/tcp
@@ -26,8 +26,8 @@ services:
       - 9198:9198/udp
       - 9199:9199/tcp
       - 9199:9199/udp
-      - "10000-10100:10000-10100/tcp"
-      - "10000-10100:10000-10100/udp"
+      - "20000-20100:20000-20100/tcp"
+      - "20000-20100:20000-20100/udp"
     volumes:
       - "data:/app/hoprd/data"
       - "conf:/app/hoprd/conf"
@@ -41,7 +41,7 @@ services:
       HOPRD_MODULE_ADDRESS: 0x
       HOPRD_PASSWORD: ""
       HOPRD_PROVIDER: ""
-      HOPRD_SESSION_PORT_RANGE: "10000:10100"
+      HOPRD_SESSION_PORT_RANGE: "20000:20100"
       HOPRD_MAX_BLOCK_RANGE: 100
       HOPRD_MAX_RPC_REQUESTS_PER_SEC: 10
       HOPRD_NAT: "true"
@@ -58,7 +58,7 @@ services:
     build:
       context: ./hopr-admin
     image: >-
-      europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:kaunas
+      europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:3.0.3
     ports:
       - "3100:4677"
     restart: unless-stopped
