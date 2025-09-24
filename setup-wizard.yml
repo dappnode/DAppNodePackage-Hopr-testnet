@@ -154,3 +154,18 @@ fields:
     secret: false
     pattern: ^(true|false)$
     patternErrorMessage: Must be either `true` or `false`!
+
+  - id: HOPRD_ENABLE_LOGS_SNAPSHOT
+    target:
+      type: environment
+      name: HOPRD_ENABLE_LOGS_SNAPSHOT
+      service: node
+    title: Enables downloading logs snapshot at node startup
+    required: false
+    description: |-
+      By enabling this option, you acknowledge and agree to trust the integrity and accuracy of the pre-synced snapshot logs url used.
+      You assume all responsibility for using these files with your node and do so at your own risk.
+      The node will attempt to download logs snapshot from the configuration property at 'hopr.chain.logs_snapshot_url'.
+    secret: false
+    pattern: ^(true|false)$
+    patternErrorMessage: Must be either `true` or `false`!
