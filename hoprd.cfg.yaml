@@ -18,6 +18,7 @@ hopr:
     network: rotsee
     keep_logs: true
     fast_sync: true
+    enable_logs_snapshot: true
     logs_snapshot_url: "https://logs-snapshots-rotsee.hoprnet.org/rotsee-v3.0-latest.tar.xz"
   safe_module:
     safe_transaction_service_provider: https://safe-transaction.prod.hoprnet.link/
