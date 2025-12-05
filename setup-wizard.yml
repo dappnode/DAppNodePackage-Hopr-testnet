@@ -167,5 +167,5 @@ fields:
       You assume full responsibility for using these files with your node and do so at your own risk. 
       The node will attempt to download the log snapshot from the configuration property.
     secret: false
-    pattern: ^[01]$
-    patternErrorMessage: Must be either `1` or `0`!
+    pattern: ^(true|false)$
+    patternErrorMessage: Must be either `true` or `false`!
