@@ -1,4 +1,4 @@
-name: Build (release package)
+name: Close Release
 
 on:
 
