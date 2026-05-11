@@ -1,0 +1,62 @@
+name: Bump packages
+
+on:
+  repository_dispatch:
+    types: [release]
+  workflow_dispatch:
+    inputs:
+      hoprd_version:
+        description: 'Version of hoprd to build'
+        required: false
+      node_admin_version:
+        description: 'Version of node-admin to build'
+        required: false
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      - name: Setup variables
+        id: setup
+        run: |
+          default_hoprd_version=$(yq -r '.services.hoprd.build.args.UPSTREAM_VERSION' docker-compose.yml)
+          node_admin_image=$(yq -r '.services.admin.image' docker-compose.yml)
+          default_node_admin_version=$(echo $node_admin_image | cut -d: -f2)
+          echo "HOPRD_VERSION=${HOPRD_VERSION:-$default_hoprd_version}" | tee -a "${GITHUB_OUTPUT}"
+          echo "NODE_ADMIN_VERSION=${NODE_ADMIN_VERSION:-$default_node_admin_version}" | tee -a "${GITHUB_OUTPUT}"
+        env:
+          HOPRD_VERSION: ${{ github.event.inputs.hoprd_version || github.event.client_payload.hoprd_version }}
+          NODE_ADMIN_VERSION: ${{ github.event.inputs.node_admin_version || github.event.client_payload.node_admin_version }}
+      - name: Update docker-compose.yml
+        run: |
+          yq -i '.services.hoprd.build.args.UPSTREAM_VERSION = strenv(HOPRD_VERSION)' docker-compose.yml
+          yq -i '.services.admin.image = "europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:" + strenv(NODE_ADMIN_VERSION)' docker-compose.yml
+        env:
+          HOPRD_VERSION: ${{ steps.setup.outputs.HOPRD_VERSION }}
+          NODE_ADMIN_VERSION: ${{ steps.setup.outputs.NODE_ADMIN_VERSION }}
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Build
+        run: |
+          npx @dappnode/dappnodesdk build \
+            --provider "remote" \
+            --verbose | tee build.log
+      - name: Commit bumped versions
+        uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0
+        with:
+          add: docker-compose.yml
+          new_branch: ${{ github.ref_name }}
+          message: "ci: Bump docker images"
+          pathspec_error_handling: ignore
+          default_author: user_info
+          github_token: ${{ secrets.github_token }}

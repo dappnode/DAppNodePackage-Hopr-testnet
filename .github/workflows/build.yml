@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      version_type:
+        required: true
+        type: string
+        description: "The type of version bump (commit, pr, release)"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Build
+        if: inputs.version_type == 'commit'
+        run: |
+          npx @dappnode/dappnodesdk build \
+            --provider "remote" \
+            --verbose | tee build.log
+      - name: Build and publish
+        if: inputs.version_type == 'pr' || inputs.version_type == 'release'
+        run: |
+          npx @dappnode/dappnodesdk publish patch \
+            --provider "remote" \
+            --upload_to "ipfs" \
+            --verbose \
+            --github_release | tee build.log
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEVELOPER_ADDRESS: "0x7305356ad936A06c4ea5DF45AD5E5C3ff9Db818E"
+      - name: Summarize build output
+        id: summarize
+        run: |
+          grep "ipfs" build.log >> $GITHUB_STEP_SUMMARY
+          ipfs_hash=$(grep -oP 'Release hash : \K/ipfs/\w+' build.log)
+      - name: Send message to Zulip
+        if: inputs.version_type == 'release'
+        uses: zulip/github-actions-zulip/send-message@v1
+        with:
+          api-key: ${{ secrets.ZULIP_API_KEY }}
+          email: ${{ secrets.ZULIP_EMAIL }}
+          organization-url: "https://hopr.zulipchat.com"
+          type: "stream"
+          to: "HOPRd"
+          topic: "Releases"
+          content: |
+            A new hoprd dAppNode package (rotsee) version is available.
+            - IPFS Hash: ${{ steps.summarize.outputs.ipfs_hash }}
+            Access to your dAppNode and check for the updates          
+            echo "ipfs_hash=$ipfs_hash" | tee -a $GITHUB_OUTPUT
