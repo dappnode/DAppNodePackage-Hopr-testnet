@@ -21,17 +21,18 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
+      - name: Install dependencies
+        run: |
+          npm install
       - name: Build
         if: inputs.version_type == 'commit'
         run: |
-          npm install
           npx @dappnode/dappnodesdk build \
             --provider "remote" \
             --verbose | tee build.log
       - name: Build and publish
         if: inputs.version_type == 'pr' || inputs.version_type == 'release'
         run: |
-          npm install
           npx @dappnode/dappnodesdk publish patch \
             --provider "remote" \
             --upload_to "ipfs" \

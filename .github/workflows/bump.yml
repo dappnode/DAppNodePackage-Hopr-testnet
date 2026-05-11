@@ -43,9 +43,11 @@ jobs:
         env:
           HOPRD_VERSION: ${{ steps.setup.outputs.HOPRD_VERSION }}
           NODE_ADMIN_VERSION: ${{ steps.setup.outputs.NODE_ADMIN_VERSION }}
-      - name: Build
+      - name: Install dependencies
         run: |
           npm install
+      - name: Build
+        run: |
           npx @dappnode/dappnodesdk build \
             --provider "remote" \
             --verbose | tee build.log
