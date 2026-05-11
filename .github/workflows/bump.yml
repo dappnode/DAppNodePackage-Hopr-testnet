@@ -1,7 +1,7 @@
 name: Bump packages
 on:
   repository_dispatch:
-    types: [release]
+    types: [bump]
   workflow_dispatch:
     inputs:
       hoprd_version:
