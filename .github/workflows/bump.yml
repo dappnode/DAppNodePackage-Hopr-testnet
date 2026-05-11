@@ -1,5 +1,4 @@
 name: Bump packages
-
 on:
   repository_dispatch:
     types: [release]
@@ -11,8 +10,6 @@ on:
       node_admin_version:
         description: 'Version of node-admin to build'
         required: false
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,19 +25,26 @@ jobs:
       - name: Setup variables
         id: setup
         run: |
-          default_hoprd_version=$(yq -r '.services.hoprd.build.args.UPSTREAM_VERSION' docker-compose.yml)
+          default_hoprd_version=$(yq -r '.services.node.build.args.UPSTREAM_VERSION' docker-compose.yml)
+          default_hoprd_version=$(echo $default_hoprd_version | cut -d@ -f1)
+          hoprd_version="${HOPRD_VERSION:-$default_hoprd_version}"
+          docker pull "${DOCKER_REGISTRY}/hoprd:${hoprd_version#v}"
+          digest=$(docker inspect --format='{{index .RepoDigests 0}}' "${DOCKER_REGISTRY}/hoprd:${hoprd_version#v}" | cut -d@ -f2)
+          echo "HOPRD_VERSION=${hoprd_version}@${digest}" | tee -a "${GITHUB_OUTPUT}"
+
           node_admin_image=$(yq -r '.services.admin.image' docker-compose.yml)
           default_node_admin_version=$(echo $node_admin_image | cut -d: -f2)
-          echo "HOPRD_VERSION=${HOPRD_VERSION:-$default_hoprd_version}" | tee -a "${GITHUB_OUTPUT}"
           echo "NODE_ADMIN_VERSION=${NODE_ADMIN_VERSION:-$default_node_admin_version}" | tee -a "${GITHUB_OUTPUT}"
         env:
+          DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
           HOPRD_VERSION: ${{ github.event.inputs.hoprd_version || github.event.client_payload.hoprd_version }}
           NODE_ADMIN_VERSION: ${{ github.event.inputs.node_admin_version || github.event.client_payload.node_admin_version }}
       - name: Update docker-compose.yml
         run: |
-          yq -i '.services.hoprd.build.args.UPSTREAM_VERSION = strenv(HOPRD_VERSION)' docker-compose.yml
-          yq -i '.services.admin.image = "europe-west3-docker.pkg.dev/hoprassociation/docker-images/hopr-admin:" + strenv(NODE_ADMIN_VERSION)' docker-compose.yml
+          yq -i '.services.node.build.args.UPSTREAM_VERSION = strenv(HOPRD_VERSION)' docker-compose.yml
+          yq -i '.services.admin.image = strenv(DOCKER_REGISTRY) + "/hopr-admin:" + strenv(NODE_ADMIN_VERSION)' docker-compose.yml
         env:
+          DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
           HOPRD_VERSION: ${{ steps.setup.outputs.HOPRD_VERSION }}
           NODE_ADMIN_VERSION: ${{ steps.setup.outputs.NODE_ADMIN_VERSION }}
       - name: Install dependencies
@@ -54,7 +58,7 @@ jobs:
       - name: Commit bumped versions
         uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0
         with:
-          add: docker-compose.yml
+          add: '[ "docker-compose.yml", "package-lock.json" ]'
           new_branch: ${{ github.ref_name }}
           message: "ci: Bump docker images"
           pathspec_error_handling: ignore

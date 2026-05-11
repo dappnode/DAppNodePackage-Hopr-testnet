@@ -1,9 +1,7 @@
 name: Close Release
-
 on:
 
   workflow_dispatch:
-
 jobs:
   build:
     name: Build
