@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        UPSTREAM_VERSION: 4.0.0-rc.3@sha256:81a866d276c37ec7db2a66d31b4fb30dee26143a4cf5a0a9c59078d8c99b42d8
+        UPSTREAM_VERSION: 4.0.0-rc.4@sha256:b4fa010ddfe9ad83cdf54b17438db5997ae5f40771e600f5fbf06342cfbb2864
     ports:
       - "3101:3101/tcp"
       - 9191:9191/tcp
