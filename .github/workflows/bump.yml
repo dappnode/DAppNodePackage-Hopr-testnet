@@ -11,7 +11,8 @@ on:
         description: 'Version of node-admin to build'
         required: false
 jobs:
-  build:
+  bump:
+    name: Bump docker images
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
